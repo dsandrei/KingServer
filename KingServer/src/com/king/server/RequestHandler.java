@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.king.helper.ScoreHelper;
 import com.king.helper.SessionHelper;
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -40,13 +39,11 @@ public class RequestHandler implements HttpHandler {
 
                 if (userId != null) {
                 	ScoreHelper.insertScore(userId, (Integer)params.get("levelId"), (Integer)params.get("score"));
+                } else {
+                	statusCode = 500;
                 }
             } else if (params.get("request").equals("highscorelist")) {
                 response = ScoreHelper.getHighestScores((Integer)params.get("levelId"));
-
-                Headers headers = exchange.getResponseHeaders();
-                headers.add("Content-Type", "text/csv");
-                headers.add("Content-Disposition", "attachment;filename=myfilename.csv");
             }               
         } catch (Exception exception) {
             statusCode = 500;
@@ -56,13 +53,13 @@ public class RequestHandler implements HttpHandler {
 
         try {
 			if (response != null && statusCode == 200) {
-			    exchange.sendResponseHeaders(statusCode, response.length());
-			    
-			    os = exchange.getResponseBody();            
-				os.write(response.toString().getBytes());
+			    exchange.sendResponseHeaders(statusCode, response.length());			    			    
 			} else {
 			    exchange.sendResponseHeaders(statusCode, 0);
 			}
+			os = exchange.getResponseBody();
+			if (response != null)
+				os.write(response.toString().getBytes());
 		} catch (IOException e) {
 		} finally {
 			try {

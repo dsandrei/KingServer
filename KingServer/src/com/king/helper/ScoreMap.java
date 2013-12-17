@@ -1,49 +1,53 @@
 package com.king.helper;
 
-import java.util.Comparator;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * The score map
  * @author Andrei
  *
  */
-public class ScoreMap {
-	/** the scores map */
-	private ConcurrentSkipListSet<Score> scoresSet;
-	
-	public ScoreMap() {
-		scoresSet = new ConcurrentSkipListSet<Score>(new Comparator<Score>() {
-
-			/* (non-Javadoc)
-			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-			 */
-			@Override
-			public int compare(Score o1, Score o2) {
-				return Integer.compare(o1.getScore(), o2.getScore());
-			}
-			
-		});
-	}
+public class ScoreMap extends CopyOnWriteArrayList<Score> {
+	/** the serial versionUID */
+	private static final long serialVersionUID = 1L;	
 	
 	/**
 	 * Add function
 	 * @param userId
 	 * @param score
 	 */
-	public void add(Integer userId, Integer score) {				
-		if (scoresSet.size() < 15 || scoresSet.first().getScore() < score) {
+	public void addScore(Integer userId, Integer score) {	
+		if (this.size() < 15 || this.get(0).getScore() < score) {
 			Score currentScore = new Score(userId,score);
-			if (scoresSet.contains(currentScore)) {
-				scoresSet.remove(currentScore);
+			if (this.contains(currentScore)) {
+				this.remove(currentScore);
 			}
-			scoresSet.add(currentScore);
-						
-			if (scoresSet.size() > 15) {
-				scoresSet.pollFirst();
+			
+			this.add(getIndexToAdd(currentScore), currentScore);
+			
+			if (this.size() > 15) {
+				this.remove(0);
 			}
 			
 		}
+	}
+	
+	private int getIndexToAdd(Score currentScore) {
+		
+		int low = 0;
+		int high = this.size() - 1;
+		
+		while (low <= high) {
+	       int mid = (low + high) >>> 1;
+	       int cmp = this.get(mid).getScore().compareTo(currentScore.getScore());
+			   if (cmp < 0)
+				   low = mid + 1;
+			   else if (cmp > 0)
+				   high = mid - 1;
+			   else
+				   return mid; // key found		         
+		}
+		return low;
 	}
 	
 	/**
@@ -52,12 +56,9 @@ public class ScoreMap {
 	 */
 	public String getHighScores() {
 		StringBuffer ret = new StringBuffer("");
-		int counter = 0;
-		for (Score currentScore: scoresSet.descendingSet()) {
-			if (counter++ > 15) 
-				break;
+		for (int i=this.size()-1;i >=0; i--) {
 			
-			ret.append(currentScore.getUserId()).append("=").append(currentScore.getScore()).append(",");						 
+			ret.append(this.get(i).getUserId()).append("=").append(this.get(i).getScore()).append(",");						 
 		}
 		return ret.substring(0, ret.length() - 1);
 	}

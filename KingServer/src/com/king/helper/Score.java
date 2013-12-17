@@ -56,6 +56,6 @@ public class Score {
 		}
 		Score other = (Score)obj;
 		
-		return this.getUserId() == other.userId;
+		return this.getUserId().equals(other.getUserId());
 	}
 }

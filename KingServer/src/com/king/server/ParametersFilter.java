@@ -3,6 +3,7 @@ package com.king.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -73,13 +74,19 @@ public class ParametersFilter extends Filter {
 				}
 			} catch (NumberFormatException e) {} 
 		}
-		if (callFilter) {
-			
+		if (callFilter) {			
 			exchange.setAttribute("parameters", parameters);
 			chain.doFilter(exchange);
 		} else {
 			exchange.sendResponseHeaders(500, 0);
-		}
+			OutputStream os = null;
+
+			try {
+				os = exchange.getResponseBody();
+				os.close();
+			} catch (IOException e) {
+			}
+		}		
 	}
 	
 	/**

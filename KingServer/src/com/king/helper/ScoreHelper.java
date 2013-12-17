@@ -23,8 +23,7 @@ public class ScoreHelper {
 			levelKeyMap.putIfAbsent(levelId, new ScoreMap());	
 			currentLevelSet = levelKeyMap.get(levelId);
 		}
-		
-		currentLevelSet.add(userId, score);
+		currentLevelSet.addScore(userId, score);
 	}
 	
 	/**
