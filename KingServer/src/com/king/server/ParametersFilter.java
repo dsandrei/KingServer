@@ -83,9 +83,8 @@ public class ParametersFilter extends Filter {
 
 			try {
 				os = exchange.getResponseBody();
-				os.close();
-			} catch (IOException e) {
-			}
+				os.close(); // if we dont close the response body output stream the response does not get sent
+			} catch (IOException e) {}
 		}		
 	}
 	
