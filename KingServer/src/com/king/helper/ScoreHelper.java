@@ -17,7 +17,7 @@ public class ScoreHelper {
 	 * @param levelId
 	 * @param score
 	 */
-	public static void insertScore(Integer userId, Integer levelId, Integer score) {
+	public static void insertScore(Integer userId, Integer levelId, Integer score) { // using a concurrent structure, no double check idiom necessary, implemented internally
 		ScoreMap currentLevelSet = levelKeyMap.get(levelId);
 		if (currentLevelSet == null) {
 			levelKeyMap.putIfAbsent(levelId, new ScoreMap());	

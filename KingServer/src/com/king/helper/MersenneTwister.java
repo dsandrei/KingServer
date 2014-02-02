@@ -289,7 +289,7 @@ public strictfp class MersenneTwister extends java.util.Random implements
 	 * Constructor using the default seed.
 	 */
 	public MersenneTwister() {
-		this(System.currentTimeMillis());
+		this(System.nanoTime()); // modified from currentTimeMillis() to avoid different threads having different threads initiating their RNG in the same milisecond
 	}
 
 	/**

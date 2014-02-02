@@ -13,7 +13,7 @@ public class SessionHelper {
 	/** the session key map */
 	private static volatile ConcurrentHashMap<String, Integer> sessionKeyMap = new ConcurrentHashMap<String, Integer>(50000, 0.75f, 1000);
 	/** the task timer */
-	private static ScheduledThreadPoolExecutor removeTimer = new ScheduledThreadPoolExecutor(20);
+	private static ScheduledThreadPoolExecutor removeTimer = new ScheduledThreadPoolExecutor(2);
 	
 	/**
 	 * Gets a session key for the user id

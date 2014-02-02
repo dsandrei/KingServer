@@ -33,8 +33,9 @@ public class AppTest extends TestCase {
 		String firstSessionKey = SessionHelper.getSessionKey(9876);
 		String secondSessionKey = SessionHelper.getSessionKey(5432);
 		
-		ScoreHelper.insertScore(SessionHelper.getUserId(firstSessionKey), 1, 30);
+		ScoreHelper.insertScore(SessionHelper.getUserId(firstSessionKey), 1, 30);		
 		ScoreHelper.insertScore(SessionHelper.getUserId(secondSessionKey), 1, 40);
+		
 		
 		System.out.println("2:"+ScoreHelper.getHighestScores(1));
 	}
@@ -83,6 +84,8 @@ public class AppTest extends TestCase {
 		ScoreHelper.insertScore(SessionHelper.getUserId(sixthSessionKey), 1, 140);
 		ScoreHelper.insertScore(SessionHelper.getUserId(seventhSessionKey), 1, 150);
 		ScoreHelper.insertScore(SessionHelper.getUserId(eigthSessionKey), 1, 160);
+		
+		System.out.println("5:"+ScoreHelper.getHighestScores(1));
 	}
 	
 	@Test

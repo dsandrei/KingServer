@@ -1,16 +1,16 @@
 package com.king.helper;
 
-public class Score {
+/**
+ * Score 
+ * @author Andrei
+ *
+ */
+public class Score { // immutable class, can be freely shared
 	/** the user id */
-	private Integer userId;
+	private final Integer userId;
 	/** the score */
-	private Integer score;
-	
-	/**
-	 * No-argument constructor
-	 */
-	public Score() {}
-	
+	private final Integer score;
+		
 	/**
 	 * Full-argument constructor
 	 * @param userId
@@ -27,26 +27,16 @@ public class Score {
 	public Integer getUserId() {
 		return userId;
 	}
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+	
 	/**
 	 * @return the score
 	 */
 	public Integer getScore() {
 		return score;
 	}
-	/**
-	 * @param score the score to set
-	 */
-	public void setScore(Integer score) {
-		this.score = score;
-	}
 	
-	/* (non-Javadoc)
+	/* 
+	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -57,5 +47,14 @@ public class Score {
 		Score other = (Score)obj;
 		
 		return this.getUserId().equals(other.getUserId());
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return this.getUserId(); // overriding hashCode is mandatory when overriding equals 
 	}
 }
